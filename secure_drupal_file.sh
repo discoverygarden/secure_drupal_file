@@ -1,8 +1,10 @@
 #/bin/bash
 DRUPAL_DIR=/var/www/drupal7
+APACHE_USER=www-data
+DRUPAL_OWNER=root
 cd $DRUPAL_DIR
 rm install.php
-chown -R root:www-data .
+chown -R $DRUPAL_OWNER:$APACHE_USER .
 find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 find . -type f -exec chmod u=rw,g=r,o= '{}' \;
 cd $DRUPAL_DIR/sites
@@ -13,5 +15,5 @@ do
    find $d -type f -exec chmod ug=rw,o= '{}' \;
 done
 chmod 440 ./*/settings.php
-cd /var/www/drupal7
+cd $DRUPAL_DIR
 drush cc all
