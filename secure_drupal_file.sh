@@ -4,10 +4,10 @@ APACHE_USER=www-data
 DRUPAL_OWNER=root
 cd $DRUPAL_DIR
 mv install.php orig.install.bak
-chmod 400 orig.install.bak
 chown -R $DRUPAL_OWNER:$APACHE_USER .
 find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 find . -type f -exec chmod u=rw,g=r,o= '{}' \;
+chmod 400 orig.install.bak
 cd $DRUPAL_DIR/sites
 find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
 for d in ./*/files
