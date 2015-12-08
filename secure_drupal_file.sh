@@ -1,5 +1,5 @@
 #/bin/bash
-DRUPAL_DIR=/test/directory
+DRUPAL_DIR=/var/www/drupal7
 APACHE_USER=www-data
 DRUPAL_OWNER=root
 if [ ! -d $DRUPAL_DIR ]; then
