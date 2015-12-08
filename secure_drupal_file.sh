@@ -4,6 +4,7 @@ APACHE_USER=www-data
 DRUPAL_OWNER=root
 cd $DRUPAL_DIR
 mv install.php orig.install.bak
+chmod 400 orig.install.bak
 chown -R $DRUPAL_OWNER:$APACHE_USER .
 find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 find . -type f -exec chmod u=rw,g=r,o= '{}' \;
