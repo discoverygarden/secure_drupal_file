@@ -3,7 +3,7 @@ DRUPAL_DIR=/var/www/drupal7
 APACHE_USER=www-data
 DRUPAL_OWNER=root
 cd $DRUPAL_DIR
-rm install.php
+mv install.php orig.install.bak
 chown -R $DRUPAL_OWNER:$APACHE_USER .
 find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 find . -type f -exec chmod u=rw,g=r,o= '{}' \;
