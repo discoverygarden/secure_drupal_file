@@ -1,7 +1,11 @@
 #/bin/bash
-DRUPAL_DIR=/var/www/drupal7
+DRUPAL_DIR=/test/directory
 APACHE_USER=www-data
 DRUPAL_OWNER=root
+if [ ! -d $DRUPAL_DIR ]; then
+   echo "DRUPAL_DIR not set properly recheck before running script"
+   exit 1
+fi
 mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
 chown -R $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
 find $DRUPAL_DIR -type d -exec chmod u=rwx,g=rx,o= '{}' \;
