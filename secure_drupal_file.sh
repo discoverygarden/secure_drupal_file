@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 DRUPAL_DIR=/var/www/drupal7
 APACHE_USER=www-data
 DRUPAL_OWNER=root
