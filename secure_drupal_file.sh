@@ -12,11 +12,11 @@ DRUPAL_DIR=/var/www/drupal7
 setupUsers()
 {
   # set apache user
-  getent passwd | grep -w www-data > /dev/null
+  getent passwd www-data > /dev/null
   if [ $? -eq "0" ]; then
     APACHE_USER="www-data"
   else
-  getent passwd | grep -w apache > /dev/null
+  getent passwd apache > /dev/null
   if [ $? -eq "0" ]; then
     APACHE_USER="apache"
   fi
@@ -45,7 +45,7 @@ sanityCheck()
   exit 1
   fi
 
-  getent passwd | grep -w $DRUPAL_OWNER > /dev/null
+  getent passwd $DRUPAL_OWNER > /dev/null
   if [ $? -ne "0" ]; then
     echo "DRUPAL_OWNER does not exist on this server"
     exit 1
