@@ -2,24 +2,31 @@
 
 # This script will lock down the drupal dirs and make them secure
 
-# {{{ set some constants
+# {{{ set defaults
 
 DRUPAL_DIR=/var/www/drupal7
-DRUPAL_OWNER=root
 
 # }}}
-# {{{ setApacheUser()
+# {{{ setupUsers()
 
-setApacheUser()
+setupUsers()
 {
+  # set apache user
   getent passwd | grep -w www-data > /dev/null
   if [ $? -eq "0" ]; then
     APACHE_USER="www-data"
   else
-	getent passwd | grep -w apache > /dev/null
-	if [ $? -eq "0" ]; then
-	  APACHE_USER="apache"
-	fi
+  getent passwd | grep -w apache > /dev/null
+  if [ $? -eq "0" ]; then
+    APACHE_USER="apache"
+  fi
+  fi
+
+  #set owner
+  if [ -n "$1" ]; then
+    DRUPAL_OWNER="$1"
+  else
+    DRUPAL_OWNER=root
   fi
 }
 
@@ -35,7 +42,13 @@ sanityCheck()
 
   if [ -z $APACHE_USER ]; then
     echo "APACHE_USER not set properly"
-	exit 1
+  exit 1
+  fi
+
+  getent passwd | grep -w $DRUPAL_OWNER > /dev/null
+  if [ $? -ne "0" ]; then
+    echo "DRUPAL_OWNER does not exist on this server"
+    exit 1
   fi
 }
 
@@ -61,7 +74,7 @@ lockItDown()
 
 # }}}
 
-setApacheUser
+setupUsers $1
 sanityCheck
 lockItDown
 
