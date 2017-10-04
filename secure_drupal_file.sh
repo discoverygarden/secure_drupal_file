@@ -14,11 +14,11 @@ setApacheUser()
 {
   getent passwd | grep -w www-data > /dev/null
   if [ $? -eq "0" ]; then
-    $APACHE_USER="www-data"
+    APACHE_USER="www-data"
   else
 	getent passwd | grep -w apache > /dev/null
 	if [ $? -eq "0" ]; then
-	  $APACHE_USER="apache"
+	  APACHE_USER="apache"
 	fi
   fi
 }
