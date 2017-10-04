@@ -40,11 +40,11 @@ sanityCheck()
 }
 
 # }}}
-# {{{ SetPemissons()
+# {{{ lockItDown()
 
-setPermissions()
+lockItDown()
 {
-  mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
+  test -f $DRUPAL_DIR/install.php && mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
   chown -R $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
   find $DRUPAL_DIR -type d -exec chmod u=rwx,g=rx,o= '{}' \;
   find $DRUPAL_DIR -type f -exec chmod u=rw,g=r,o= '{}' \;
@@ -63,5 +63,5 @@ setPermissions()
 
 setApacheUser
 sanityCheck
-setPermissions
+lockItDown
 
