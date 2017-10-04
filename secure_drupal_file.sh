@@ -46,7 +46,7 @@ sanityCheck()
   fi
 
   getent passwd | grep -w $DRUPAL_OWNER > /dev/null
-  if [ $? -eq "0" ]; then
+  if [ $? -ne "0" ]; then
     echo "DRUPAL_OWNER does not exist on this server"
     exit 1
   fi
