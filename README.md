@@ -4,7 +4,7 @@ A script to secure drupal filesystem
 To run the script, provide the user for the desired Drupal filesystem owner:
 
 ```
-./secure_drupal_file root
+./secure_drupal_file.sh root
 ```
 
 It is recommended that you run this in a stage/dev system before in production.
