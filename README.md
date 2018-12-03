@@ -1,12 +1,11 @@
-# secure_drupal_file
-script to secure drupal filesystem
+# Secure Drupal File
+A script to secure drupal filesystem
 
-Edit script and ensure you have the appropriate values:
+To run the script, provide the user for the desired Drupal filesystem owner:
 
-e.g.
-DRUPAL_DIR=/var/www/drupal7
-APACHE_USER=www-data
-DRUPAL_OWNER=root
+```
+./secure_drupal_file root
+```
 
 It is recommended that you run this in a stage/dev system before in production.
 
