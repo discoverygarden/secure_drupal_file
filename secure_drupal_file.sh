@@ -58,7 +58,7 @@ sanityCheck()
 lockItDown()
 {
   test -f $DRUPAL_DIR/install.php && mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
-  chown -R $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
+  chown -RL $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
   find $DRUPAL_DIR -type d -exec chmod u=rwx,g=rx,o= '{}' \;
   find $DRUPAL_DIR -type f -exec chmod u=rw,g=r,o= '{}' \;
   chmod 400 $DRUPAL_DIR/orig.install.bak
