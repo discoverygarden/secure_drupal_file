@@ -28,6 +28,11 @@ setupUsers()
   else
     DRUPAL_OWNER=root
   fi
+
+  #set multisite
+  if [ -n "$2" ]; then
+    DRUPAL_DIR="/var/www/drupal7/sites/$2"
+  fi
 }
 
 # }}}
