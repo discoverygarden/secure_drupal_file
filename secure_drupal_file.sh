@@ -5,6 +5,11 @@
 # {{{ set defaults
 
 DRUPAL_DIR=/var/www/drupal7
+ROOT_DIR_PERM=750
+ROOT_FILE_PERM=640
+
+FILE_DIR_PERM=770
+FILE_FILE_PERM=660
 
 # }}}
 # {{{ setupUsers()
@@ -59,14 +64,14 @@ lockItDown()
 {
   test -f $DRUPAL_DIR/install.php && mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
   chown -RL $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
-  find $DRUPAL_DIR -type d -exec chmod u=rwx,g=rx,o= '{}' \;
-  find $DRUPAL_DIR -type f -exec chmod u=rw,g=r,o= '{}' \;
+  find $DRUPAL_DIR -type d -not -perm $ROOT_DIR_PERM -not -path '*/sites/*/files/*' -exec chmod $ROOT_DIR_PERM '{}' \;
+  find $DRUPAL_DIR -type f -not -perm $ROOT_FILE_PERM -not -path '*/sites/*/files/*' -exec chmod $ROOT_FILE_PERM '{}' \;
   chmod 400 $DRUPAL_DIR/orig.install.bak
-  find $DRUPAL_DIR/sites -type d -name files -exec chmod ug=rwx,o= '{}' \;
+  find $DRUPAL_DIR/sites -type d -name files -exec chmod $FILE_DIR_PERM '{}' \;
   for d in $DRUPAL_DIR/sites/*/files
   do
-    find $d -type d -exec chmod ug=rwx,o= '{}' \;
-    find $d -type f -exec chmod ug=rw,o= '{}' \;
+    find $d -type d -not -perm $FILE_DIR_PERM -exec chmod $FILE_DIR_PERM '{}' \;
+    find $d -type f -not -perm $FILE_FILE_PERM -exec chmod $FILE_FILE_PERM '{}' \;
   done
   chmod 440 $DRUPAL_DIR/sites/*/settings.php
   drush -r $DRUPAL_DIR cc all
