@@ -4,12 +4,13 @@
 
 # {{{ set defaults
 
-DRUPAL_DIR=/var/www/drupal7
-ROOT_DIR_PERM=750
-ROOT_FILE_PERM=640
-
-FILE_DIR_PERM=770
-FILE_FILE_PERM=660
+if [ -f "env.sh" ]
+then
+  source env.sh
+else
+  echo -e "${red}Copy default.env.sh to env.sh and set accordingly${NC}"
+  exit 1
+fi
 
 # }}}
 # {{{ setupUsers()
@@ -21,10 +22,10 @@ setupUsers()
   if [ $? -eq "0" ]; then
     APACHE_USER="www-data"
   else
-  getent passwd apache > /dev/null
-  if [ $? -eq "0" ]; then
-    APACHE_USER="apache"
-  fi
+    getent passwd apache > /dev/null
+    if [ $? -eq "0" ]; then
+      APACHE_USER="apache"
+    fi
   fi
 
   #set owner
