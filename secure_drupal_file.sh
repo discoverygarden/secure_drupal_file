@@ -4,12 +4,13 @@
 
 # {{{ set defaults
 
-DRUPAL_DIR=/var/www/drupal7
-ROOT_DIR_PERM=750
-ROOT_FILE_PERM=640
-
-FILE_DIR_PERM=770
-FILE_FILE_PERM=660
+if [ -f "env.sh" ]
+then
+  source env.sh
+else
+  echo -e "${red}Copy default.env.sh to env.sh and set accordingly${NC}"
+  exit 1
+fi
 
 # }}}
 # {{{ setupUsers()
@@ -21,10 +22,10 @@ setupUsers()
   if [ $? -eq "0" ]; then
     APACHE_USER="www-data"
   else
-  getent passwd apache > /dev/null
-  if [ $? -eq "0" ]; then
-    APACHE_USER="apache"
-  fi
+    getent passwd apache > /dev/null
+    if [ $? -eq "0" ]; then
+      APACHE_USER="apache"
+    fi
   fi
 
   #set owner
@@ -55,6 +56,7 @@ sanityCheck()
     echo "DRUPAL_OWNER does not exist on this server"
     exit 1
   fi
+  echo -e "${green}User set to $DRUPAL_OWNER and Group set to $APACHE_USER${NC}"
 }
 
 # }}}
@@ -63,11 +65,14 @@ sanityCheck()
 lockItDown()
 {
   test -f $DRUPAL_DIR/install.php && mv $DRUPAL_DIR/install.php $DRUPAL_DIR/orig.install.bak
+  echo -e "${green}Setting ownership to $DRUPAL_OWNER:$APACHE_USER${NC}"
   chown -RL $DRUPAL_OWNER:$APACHE_USER $DRUPAL_DIR
+  echo -e "${green}Setting base permissions to dir $ROOT_DIR_PERM and file $ROOT_FILE_PERM${NC}"
   find $DRUPAL_DIR -type d -not -perm $ROOT_DIR_PERM -not -path '*/sites/*/files/*' -exec chmod $ROOT_DIR_PERM '{}' \;
   find $DRUPAL_DIR -type f -not -perm $ROOT_FILE_PERM -not -path '*/sites/*/files/*' -exec chmod $ROOT_FILE_PERM '{}' \;
   chmod 400 $DRUPAL_DIR/orig.install.bak
   find $DRUPAL_DIR/sites -type d -name files -exec chmod $FILE_DIR_PERM '{}' \;
+  echo -e "${green}Setting sites/*/files permissions to dir $FILE_DIR_PERM and file $FILE_FILE_PERM${NC}"
   for d in $DRUPAL_DIR/sites/*/files
   do
     find $d -type d -not -perm $FILE_DIR_PERM -exec chmod $FILE_DIR_PERM '{}' \;
@@ -75,6 +80,7 @@ lockItDown()
   done
   chmod 440 $DRUPAL_DIR/sites/*/settings.php
   drush -r $DRUPAL_DIR cc all
+  echo -e "${green}Complete${NC}"
 }
 
 # }}}
